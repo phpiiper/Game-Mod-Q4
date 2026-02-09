@@ -151,7 +151,7 @@ public:	// common physics interface
 // abahr
 	virtual const idVec3		GetContactNormal() const { return vec3_zero; }
 	virtual const idVec3		GetGroundContactNormal() const { return vec3_zero; }
-	virtual idEntity*			GetSelf() const = 0;
+	virtual idEntity*			GetSelf() mconst = 0;
 // RAVEN END
 								// set the master entity for objects bound to a master
 	virtual void				SetMaster( idEntity *master, const bool orientated = true ) = 0;

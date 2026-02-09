@@ -356,3 +356,13 @@ private:
 #endif /* !__GAME_PROJECTILE_H__ */
 
 // RAVEN END
+
+
+// :: pmod
+
+/*
+class pProjectile : public idProjectile {
+	CLASS_PROTOTYPE(pProjectile);
+
+}
+*/

@@ -1348,6 +1348,9 @@ void idProjectile::Event_Touch( idEntity *other, trace_t *trace ) {
 		DefaultDamageEffect( collision, collision.c.normal, NULL );
 		Explode( NULL, true );
 
+		// pmod ::  IF weapon var UPPIES = 1 (only done on rocketlauncher), then...
+		// think->EnactUppie(other);
+
 		gameLocal.currentThinkingEntity = think;
 	}
 }

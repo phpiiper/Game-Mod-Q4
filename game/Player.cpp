@@ -8077,7 +8077,7 @@ void idPlayer::SetClipModel( bool forceSpectatorBBox ) {
 
 	if ( pm_usecylinder.GetBool() ) {
 		newClip = new idClipModel( idTraceModel( bounds, 8 ), declManager->FindMaterial( "textures/flesh_boundingbox" ) );
-		newClip->Translate( physicsObj.PlayerGetOrigin() );
+		newClip->Translate( physicsObj.PlayerGetOrigin() ); // pmod :: possible injection in somewhere like this???
 		physicsObj.SetClipModel( newClip, 1.0f );
 	} else {
 		newClip = new idClipModel( idTraceModel( bounds ), declManager->FindMaterial( "textures/flesh_boundingbox" ) );
@@ -8757,6 +8757,12 @@ void idPlayer::AdjustSpeed( void ) {
 	if ( influenceActive == INFLUENCE_LEVEL3 ) {
 		speed *= 0.33f;
 	}
+
+	// pmod :: speed up user???
+
+	// if (speed > 0.0f) {
+	//	speed *= 2.0f;
+	// }
 
 	physicsObj.SetSpeed( speed, pm_crouchspeed.GetFloat() );
 }

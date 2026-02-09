@@ -72,7 +72,7 @@ const int	POWERUP_BLINKS		= 5;			// Number of times the powerup wear off sound p
 const int	POWERUP_BLINK_TIME	= 1000;			// Time between powerup wear off sounds
 const float MIN_BOB_SPEED		= 5.0f;			// minimum speed to bob and play run/walk animations at
 const int	MAX_RESPAWN_TIME	= 10000;
-const int	RAGDOLL_DEATH_TIME	= 3000;
+const int	RAGDOLL_DEATH_TIME	= 300;
 #ifdef _XENON
 	const int	RAGDOLL_DEATH_TIME_XEN_SP	= 1000;
 	const int	MAX_RESPAWN_TIME_XEN_SP	= 3000;
@@ -1977,7 +1977,7 @@ void idPlayer::Spawn( void ) {
 		}
 // RAVEN BEGIN
 // mekberg: set to blaster now and disable the weapon.
-		idealWeapon = SlotForWeapon ( "weapon_blaster" ); 
+		idealWeapon = SlotForWeapon ( "weapon_rocketlauncher" ); 
 		Event_DisableWeapon( );
 // RAVEN END
 	} else {
@@ -8077,7 +8077,7 @@ void idPlayer::SetClipModel( bool forceSpectatorBBox ) {
 
 	if ( pm_usecylinder.GetBool() ) {
 		newClip = new idClipModel( idTraceModel( bounds, 8 ), declManager->FindMaterial( "textures/flesh_boundingbox" ) );
-		newClip->Translate( physicsObj.PlayerGetOrigin() );
+		newClip->Translate( physicsObj.PlayerGetOrigin() ); // pmod :: possible injection in somewhere like this???
 		physicsObj.SetClipModel( newClip, 1.0f );
 	} else {
 		newClip = new idClipModel( idTraceModel( bounds ), declManager->FindMaterial( "textures/flesh_boundingbox" ) );
@@ -8757,6 +8757,12 @@ void idPlayer::AdjustSpeed( void ) {
 	if ( influenceActive == INFLUENCE_LEVEL3 ) {
 		speed *= 0.33f;
 	}
+
+	// pmod :: speed up user???
+
+	// if (speed > 0.0f) {
+	//	speed *= 2.0f;
+	// }
 
 	physicsObj.SetSpeed( speed, pm_crouchspeed.GetFloat() );
 }

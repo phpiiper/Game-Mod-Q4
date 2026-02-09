@@ -269,9 +269,9 @@ public:
 	int						secretAreasDiscovered;
 
 	// Pmod :: variables
-	int						elementForm; // -1 : unset, 0 : solid, 1 : liquid, [later >> 2 : gas]
-	int						elementElement; // -1 : unset, 0 : fire, 1 : water, 2 : earth
-	int						elementModifier; // -1 : unset, 0 : enlarge, 1 : minimize
+	//int						elementForm; // -1 : unset, 0 : solid, 1 : liquid, [later >> 2 : gas]
+	//int						elementElement; // -1 : unset, 0 : fire, 1 : water, 2 : earth
+	//int						elementModifier; // -1 : unset, 0 : enlarge, 1 : minimize
 	// TEST :: set default weapon to rocketlauncher MAIN REQ, unlimited AMMO, take railgun props into rocket launcher???
 	// TEST :: check for these pmod variables and respond accordingly (solid = dam, liquid = heal, )
 };

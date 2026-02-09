@@ -736,7 +736,7 @@ bool idProjectile::Collide( const trace_t &collision, const idVec3 &velocity, bo
 		idVec3 origin = ent->GetEyePosition();
 		gameLocal.Printf("737 :: Hit Entity Position: %f, %f, %f \n", origin.x, origin.y, origin.z);
 		idVec3 gravity = gameLocal.GetCurrentGravity(ent);
-		ent->SetOrigin(origin + gravity * 2);
+		ent->SetOrigin(origin * 1.01);
 	}
 
 	// Can the projectile damage?  
@@ -839,9 +839,6 @@ bool idProjectile::Collide( const trace_t &collision, const idVec3 &velocity, bo
 					idVec3 dir = velocity;
 					dir.Normalize();
 					actualHitEnt->Damage( this, owner, dir, damageDefName, damagePower, CLIPMODEL_ID_TO_JOINT_HANDLE( collision.c.id ) );
-					// PLPMOD :: LOG HIT ENTITY??? :: Test... NOT HITS
-					idVec3 origin = actualHitEnt->GetEyePosition();
-					gameLocal.Printf("844 :: Hit Entity Position: %f, %f, %f \n", origin.x, origin.y, origin.z);
 				}
 			}
 			return false;		
@@ -879,10 +876,6 @@ bool idProjectile::Collide( const trace_t &collision, const idVec3 &velocity, bo
 
 	// if the hit entity takes damage
 	if ( canDamage ) {
-		// PLPMOD :: LOG HIT ENTITY??? :: test... NO HITS
-		idVec3 origin = ent->GetEyePosition();
-		gameLocal.Printf("884 :: Hit Entity Position: %f, %f, %f \n", origin.x, origin.y, origin.z);
-
  		if ( damageDefName[0] != '\0' ) {
 			idVec3 dir = velocity;
 			dir.Normalize();
@@ -1017,8 +1010,6 @@ void idProjectile::SpawnImpactEntities(const trace_t& collision, const idVec3 ve
 			//Now orient the direction to the surface world orientation.
 			direction = impactAxes * tempDirection;
 			spawnProjectile->Launch(origin, direction, reflectionVelocity);
-
-			// PLPMOD :: Test if this is a req place for rocket launcher???
 		}
 	}
 }
@@ -1046,9 +1037,6 @@ void idProjectile::DefaultDamageEffect( const trace_t &tr, const idVec3 &velocit
 		dir = velocity;
 		dir.Normalize ( );
 		axis = ((-dir + tr.c.normal) * 0.5f).ToMat3();
-		// PLPMOD :: 1041 : LOG HIT ENTITY???
-		idVec3 origin = ent->GetEyePosition();
-		gameLocal.Printf("1051 :: Hit Entity Position: %f, %f, %f \n", origin.x, origin.y, origin.z);
 		
 		// Play an actor specific impact effect?
 		const idDecl *actorImpactEffect = gameLocal.GetEffect( spawnArgs, "fx_impact_actor", tr.c.materialType );

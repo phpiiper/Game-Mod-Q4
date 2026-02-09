@@ -26,7 +26,7 @@
 // RAVEN END
 
 #ifdef _WIN32
-#include "TypeInfo.h"
+#include "TypeInfo"
 #else
 #include "NoGameTypeInfo.h"
 #endif
@@ -171,7 +171,7 @@ void Cmd_ListSpawnArgs_f( const idCmdArgs &args ) {
 
 	for ( i = 0; i < ent->spawnArgs.GetNumKeyVals(); i++ ) {
 		const idKeyValue *kv = ent->spawnArgs.GetKeyVal( i );
-		gameLocal.Printf( "\"%s\"  "S_COLOR_WHITE"\"%s\"\n", kv->GetKey().c_str(), kv->GetValue().c_str() );
+		gameLocal.Printf( "\"%s\"  " S_COLOR_WHITE "\"%s\"\n", kv->GetKey().c_str(), kv->GetValue().c_str() );
 	}
 }
 
@@ -2940,6 +2940,18 @@ void Cmd_BuyItem_f( const idCmdArgs& args ) {
 	player->GenerateImpulseForBuyAttempt( args.Argv(1) );
 }
 // RITUAL END
+// PLPMOD :: locate cmd
+void Cmd_Locate_f(const idCmdArgs& args) {
+	idPlayer* player;
+	idVec3 origin;
+	player = gameLocal.GetLocalPlayer();
+	if (!player) {
+		common->Printf("ERROR: Cmd_Locate_f() failed, since GetLocalPlayer() was NULL.\n", player);
+		return;
+	}
+	origin = player->GetEyePosition();
+	gameLocal.Printf("Player Location: (%f,%f,%f) \n", origin.x, origin.y, origin.z);
+}
 
 void Cmd_PlayerEmote_f( const idCmdArgs& args ) {
 	if( gameLocal.GetLocalPlayer() == NULL ) {
@@ -3231,6 +3243,8 @@ void idGameLocal::InitConsoleCommands( void ) {
 // squirrel: Mode-agnostic buymenus
 	cmdSystem->AddCommand( "buyMenu",				Cmd_ToggleBuyMenu_f,		CMD_FL_GAME,				"Toggle buy menu (if in a buy zone and the game type supports it)" );
 	cmdSystem->AddCommand( "buy",					Cmd_BuyItem_f,				CMD_FL_GAME,				"Buy an item (if in a buy zone and the game type supports it)" );
+	// GET CHAR POSITION
+	cmdSystem->AddCommand("locate", Cmd_Locate_f, CMD_FL_GAME, "Print coords of player");
 // RITUAL END
 
 }

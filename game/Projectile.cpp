@@ -731,12 +731,21 @@ bool idProjectile::Collide( const trace_t &collision, const idVec3 &velocity, bo
 	if ( ent->GetTeamMaster( ) && ent->GetTeamMaster( )->IsType ( idActor::GetClassType() ) ) {
 		actualHitEnt = ent;
 		ent = ent->GetTeamMaster( );
-		// PLPMOD :: 743 :: LOG HIT ENTITY??? : Test... hits direct actors (NOT enemies/monsters maybe???)
-		// idVec3 origin = ent->GetEyePosition();
-		idVec3 origin = ent->GetEyePosition();
-		gameLocal.Printf("737 :: Hit Entity Position: %f, %f, %f \n", origin.x, origin.y, origin.z);
-		idVec3 gravity = gameLocal.GetCurrentGravity(ent);
-		ent->SetOrigin(origin * 1.01);
+		idPlayer* player = gameLocal.GetLocalPlayer();
+		if (player) {
+			int currentWeapon = player->GetCurrentWeapon();
+			int rocketLauncher = player->GetWeaponIndex("weapon_Rocketlauncher");
+			gameLocal.Printf("738 :: currentWeapon to rocketLauncher : %d, %d \n", currentWeapon, rocketLauncher);
+			if (currentWeapon == rocketLauncher) {
+				// PLPMOD :: 740
+				idPhysics* phys = ent->GetPhysics();
+				idVec3 velocity = phys->GetLinearVelocity();
+				velocity.z = 10000;
+				phys->SetLinearVelocity(velocity);
+			}
+
+		}
+		
 	}
 
 	// Can the projectile damage?  

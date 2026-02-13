@@ -9070,7 +9070,7 @@ void idPlayer::Move( void ) {
  			physicsObj.SetLinearVelocity( vel );
  		}
 	}
-
+	// PLPMOD :: Original JUMP function for player
 	if ( pfl.jump ) {
 		loggedAccel_t	*acc = &loggedAccel[currentLoggedAccel&(NUM_LOGGED_ACCELS-1)];
 		currentLoggedAccel++;

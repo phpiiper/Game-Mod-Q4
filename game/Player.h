@@ -146,8 +146,6 @@ enum {
 	POWERUP_TEAM_DAMAGE_MOD,
 	
 	POWERUP_MAX,
-
-	// PMod :: Elements possibly here?
 };
 
 enum {
@@ -191,6 +189,17 @@ typedef enum {
 	IBS_ALREADY_HAVE = 2,
 	IBS_CANNOT_AFFORD = 3,
 } itemBuyStatus_t;
+
+
+// PLP_MOD :: 194
+
+// Types of Elements
+typedef enum {
+	PLP_ELEM_FIRE = 0,
+	PLP_ELEM_ICE = 1,
+	PLP_ELEM_WIND = 2
+};
+
 
 const int	ASYNC_PLAYER_TOURNEY_STATUS_BITS = idMath::BitsForInteger( PTS_NUM_STATES );
 
@@ -804,6 +813,25 @@ public:
 	void					SetCash( float newCashAmount );
 	void					ResetCash();
 // RITUAL END
+
+
+	// PLP MOD :: 818 | Player.h CUSTOM PROPS
+
+	/*
+	VARIABLES for arena management
+	*/
+	int						round;
+	bool					inRound;
+	int						enemiesLeft;
+	int						skillPoints;
+
+	/*
+	FUNCTIONS for arena management
+	*/
+	void					StartRound();
+	void					EndRound();
+	void					OpenGUI( int guiID );
+	void					GiveSkillPoints( int points );
 
 protected:
 	void					SetupHead( const char* modelKeyName = "", idVec3 headOffset = idVec3(0, 0, 0) );

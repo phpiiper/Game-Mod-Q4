@@ -360,3 +360,70 @@ private:
 
 
 // RAVEN END
+
+/*
+===============================================================================
+
+  idItemRune :: PLP_MOD :: 367
+
+===============================================================================
+*/
+
+class idItemRune: public idItem {
+public:
+	CLASS_PROTOTYPE(idItemRune);
+
+	idItemRune();
+
+	void					Save(idSaveGame* savefile) const;
+	void					Restore(idRestoreGame* savefile);
+
+	void					Spawn();
+	virtual bool			GiveToPlayer(idPlayer* player);
+	virtual void			Think(void);
+	virtual bool			Pickup(idPlayer* player);
+
+protected:
+	/*
+		[Levels]
+			1 :: 100% default
+			2 :: 150% of default
+			3 :: 200% of default
+		[Subtype :: Type ID]
+		> Status
+			> Burn
+				> Lvl 1 (1)
+				> Lvl 2 (2)
+				> Lvl 3 (3)
+			> Freeze
+				> Lvl 1 (4)
+				> Lvl 2 (5)
+				> Lvl 3 (6)
+			> Raise (Fly)
+				> Lvl 1 (7)
+				> Lvl 2 (8)
+				> Lvl 3 (9)
+		> Modifier
+			> Atk +
+				> Lvl 1 (10)
+				> Lvl 2 (11)
+				> Lvl 3 (12)
+			> Atk %
+				> Lvl 1 (13)
+				> Lvl 2 (14)
+				> Lvl 3 (15)
+		> Mode
+			> Spray (16)
+			> AOE (17)
+			> Normal (18)
+	*/
+	int						type;
+	int						level;
+	bool					active;
+
+
+	int						time;
+	int						droppedTime;
+
+	bool					unique; // Drop because all are unique? --- treat it as such
+};

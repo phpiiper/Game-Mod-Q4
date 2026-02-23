@@ -2373,3 +2373,93 @@ riDeadZonePowerup::Event_ResetFlag
 void riDeadZonePowerup::Event_ResetSpawn( void ) {
 	ResetSpawn( POWERUP_DEADZONE );
 }
+
+
+
+/*
+================
+idItemRune::Pickup :: PLP_MOD :: 2381
+================
+*/
+
+CLASS_DECLARATION(idItem, idItemRune)
+END_CLASS
+
+/*
+================
+idItemRune::idItemRune
+================
+*/
+idItemRune::idItemRune() {
+	active = false;
+}
+
+/*
+================
+idItemRune::Save
+================
+*/
+void idItemRune::Save(idSaveGame* savefile) const {
+	savefile->WriteBool(active);
+}
+
+/*
+================
+idItemRune::Restore
+================
+*/
+void idItemRune::Restore(idRestoreGame* savefile) {
+	savefile->ReadBool(active);	
+}
+
+/*
+================
+idItemRune::Spawn
+================
+*/
+void idItemRune::Spawn(void) {
+	// Not required ??? :: PLP_MOD :: 2421
+}
+
+/*
+================
+idItemRune::GiveToPlayer
+================
+*/
+bool idItemRune::GiveToPlayer(idPlayer* player) {
+	if (player == NULL || player->spectating) {
+		return false;
+	}
+
+	// only one arena CTF powerup at a time
+	/*
+	if (type >= POWERUP_AMMOREGEN && type <= POWERUP_SCOUT) {
+		if ((player->inventory.powerups & ARENA_POWERUP_MASK) != 0) {
+			return false;
+		}
+	}
+	*/
+
+	// also call idItem::GiveToPlayer so any inv_* keywords get applied
+	idItem::GiveToPlayer(player);
+
+	return true;
+}
+
+/*
+================
+idItemRune::Think
+================
+*/
+void idItemRune::Think(void) {
+	
+}
+
+/*
+================
+idItemRune::Pickup
+================
+*/
+bool idItemRune::Pickup(idPlayer* player) {
+	return false;
+}

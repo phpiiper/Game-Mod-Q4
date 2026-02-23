@@ -2952,6 +2952,49 @@ void Cmd_Locate_f(const idCmdArgs& args) {
 	origin = player->GetEyePosition();
 	gameLocal.Printf("Player Location: (%f,%f,%f) \n", origin.x, origin.y, origin.z);
 }
+// PLPMOD :: WhatIsIt cmd
+/*
+void Cmd_WhatIs_f(const idCmdArgs& args) {
+	idEntity* ent;
+	idPlayer* player;
+	idVec3 origin, dir;
+	idMat3 angleMatrix;
+	idDict args;
+	idAngles angles;
+
+	// args.set("range", "1000");
+	player = gameLocal.GetLocalPlayer();
+	if (!player) return;
+	player->GetViewPos(origin, angleMatrix);
+	//
+	
+}
+*/
+// PLPMOD :: Manage SkillPoints
+// add, remove, set, view
+/*
+	/plpSP [option: add, remove, set] [int: amt]
+*/
+void Cmd_PLPSP_f(const idCmdArgs& args) {
+	idPlayer* player;
+	player = gameLocal.GetLocalPlayer();
+	int sp = player->skillPoints;
+	if (player == NULL) {
+		gameLocal.Warning("[PLPMOD] Cmd_PLPSP_f() - local player is NULL");
+		return;
+	}
+	if (args.Argc() <= 1) {
+		gameLocal.Printf("[PLPMOD] usage: plpSP <option>\n");
+		gameLocal.Printf("\ttry 'add <int>', 'remove <int>', 'set <int>', 'display'\n");
+		return;
+	}
+	// 
+	if (!idStr::Icmp( args.Argv( 1 ),"display" ) ) {
+		gameLocal.Printf("[PLPMOD] Skill Points: %d \n",sp);
+
+	}
+
+}
 
 void Cmd_PlayerEmote_f( const idCmdArgs& args ) {
 	if( gameLocal.GetLocalPlayer() == NULL ) {
@@ -3244,7 +3287,8 @@ void idGameLocal::InitConsoleCommands( void ) {
 	cmdSystem->AddCommand( "buyMenu",				Cmd_ToggleBuyMenu_f,		CMD_FL_GAME,				"Toggle buy menu (if in a buy zone and the game type supports it)" );
 	cmdSystem->AddCommand( "buy",					Cmd_BuyItem_f,				CMD_FL_GAME,				"Buy an item (if in a buy zone and the game type supports it)" );
 	// GET CHAR POSITION
-	cmdSystem->AddCommand("locate", Cmd_Locate_f, CMD_FL_GAME, "Print coords of player");
+	cmdSystem->AddCommand("locate",					Cmd_Locate_f,				CMD_FL_GAME,				"Print coords of player"); // PLP_MOD :: ADDED
+	cmdSystem->AddCommand("plpSP",					Cmd_PLPSP_f,				CMD_FL_GAME,				"[PLP_MOD] Manage Skill Points of self"); // plp_mod should add correctly?
 // RITUAL END
 
 }

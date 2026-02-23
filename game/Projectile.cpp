@@ -727,7 +727,7 @@ bool idProjectile::Collide( const trace_t &collision, const idVec3 &velocity, bo
    		return true;
    	}
 
-	// If the hit entity is bound to an actor use the actor instead
+	// If the hit entity is bound to an actor use the actor instead --> FIGURE OUT BETTER LOCATION FOR THIS
 	if ( ent->GetTeamMaster( ) && ent->GetTeamMaster( )->IsType ( idActor::GetClassType() ) ) {
 		actualHitEnt = ent;
 		ent = ent->GetTeamMaster( );

@@ -1548,6 +1548,14 @@ void idPlayer::Init( void ) {
 
 	modelName				= idStr();
 
+	/*
+	PLP MOD :: 1552 | INIT custom variables
+	*/
+	round					= 1;
+	inRound					= false;
+	enemiesLeft				= -1;
+	skillPoints				= 0;
+
 	// Remove any hearing loss that may be set up from the last map
 	soundSystem->FadeSoundClasses( SOUNDWORLD_GAME, 0, 0.0f, 0 );
 	
@@ -4168,6 +4176,8 @@ bool idPlayer::GiveItem( idItem *item ) {
 	const idKeyValue	*arg;
 	idDict				attr;
 	bool				gave;
+
+	gameLocal.Printf("4172 :: Give Item started... \n");
 	
 	bool dropped = item->spawnArgs.GetBool( "dropped" );
 
@@ -4226,6 +4236,7 @@ bool idPlayer::GiveItem( idItem *item ) {
 			return false;
 		}
 	} else {
+		gameLocal.Printf("4231 :: Give Item ended... \n");
 		gave = true;
 	}
 
@@ -4269,6 +4280,7 @@ bool idPlayer::GiveItem( idItem *item ) {
 	if ( gameLocal.mpGame.IsBuyingAllowedInTheCurrentGameMode() )
 		gameLocal.mpGame.RedrawLocalBuyMenu();
 //RITUAL END
+	gameLocal.Printf("4274 :: Give Item ended... \n");
 
 	return gave;
 }
@@ -14084,3 +14096,24 @@ int idPlayer::CanSelectWeapon(const char* weaponName)
 }
 
 // RITUAL END
+
+
+/*
+PLP MOD :: 14102 | DEFINING custom functions
+*/
+void idPlayer::StartRound() 
+{
+	
+}
+void idPlayer::EndRound()
+{
+
+}
+void idPlayer::OpenGUI(int guiID)
+{
+
+}
+void idPlayer::GiveSkillPoints(int points)
+{
+
+}

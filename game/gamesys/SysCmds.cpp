@@ -1124,6 +1124,8 @@ void Cmd_Spawn_f( const idCmdArgs &args ) {
 		return;
 	}
 
+	// PLP_MOD :: 1127 (Summoning mobs here!)
+
 	if ( args.Argc() & 1 ) {	// must always have an even number of arguments
 		gameLocal.Printf( "usage: spawn classname [key/value pairs]\n" );
 		return;
@@ -2975,23 +2977,145 @@ void Cmd_WhatIs_f(const idCmdArgs& args) {
 /*
 	/plpSP [option: add, remove, set] [int: amt]
 */
-void Cmd_PLPSP_f(const idCmdArgs& args) {
-	idPlayer* player;
-	player = gameLocal.GetLocalPlayer();
-	int sp = player->skillPoints;
-	if (player == NULL) {
+void Cmd_PLPSP_f( const idCmdArgs& args ) {
+	idPlayer* player = gameLocal.GetLocalPlayer();
+	int sp = player->SkillPoints;
+	if (!player) {
 		gameLocal.Warning("[PLPMOD] Cmd_PLPSP_f() - local player is NULL");
 		return;
 	}
 	if (args.Argc() <= 1) {
 		gameLocal.Printf("[PLPMOD] usage: plpSP <option>\n");
-		gameLocal.Printf("\ttry 'add <int>', 'remove <int>', 'set <int>', 'display'\n");
+		gameLocal.Printf("\ttry 'change <int>', 'set <int>', 'display'\n");
 		return;
 	}
 	// 
 	if (!idStr::Icmp( args.Argv( 1 ),"display" ) ) {
-		gameLocal.Printf("[PLPMOD] Skill Points: %d \n",sp);
+		gameLocal.Printf("[PLPMOD] Skill Points: %d\n",sp);
+	}
+	if (!idStr::Icmp(args.Argv(1), "set")) {
+		int newValue = atoi(args.Argv(2));
+		player->SkillPoints = newValue;
+		gameLocal.Printf("[PLPMOD] Set Skill Points to %d \n", newValue);
+	}
+	if (!idStr::Icmp(args.Argv(1), "change")) {
+		int newValue = atoi(args.Argv(2));
+		player->SkillPoints += newValue;
+		gameLocal.Printf("[PLPMOD] Added %d Skill Points \n", newValue);
+	}
 
+}
+// PLPMOD :: Manage Arema
+// start, end, setRound, openGUI
+/*
+	/plpAM 
+*/
+void Cmd_PLPAM_f(const idCmdArgs& args) {
+	idPlayer* player = gameLocal.GetLocalPlayer();
+	int sp = player->SkillPoints;
+	if (!player) {
+		gameLocal.Warning("[PLPMOD] Cmd_PLPAM_f() - local player is NULL");
+		return;
+	}
+	if (args.Argc() <= 1) {
+		gameLocal.Printf("[PLPMOD] usage: plpAM <option>\n");
+		gameLocal.Printf("\ttry 'start' 'end' 'set_round' 'openGUI' 'display <variable> '\n");
+		return;
+	}
+	// 
+	if (!idStr::Icmp(args.Argv(1), "start")) {
+		player->StartRound();
+	}
+	if (!idStr::Icmp(args.Argv(1), "end")) {
+		player->EndRound();
+	}
+	if (!idStr::Icmp(args.Argv(1), "setRound")) {
+		int newValue = atoi(args.Argv(2));
+		player->CurrentRound = (newValue > 0 ? newValue : 1);
+	}
+	if (!idStr::Icmp(args.Argv(1), "display")) {
+		if (!idStr::Icmp(args.Argv(2), "round")) {
+			gameLocal.Printf("[PLPMOD] [AM Display] Round: %d \n", player->CurrentRound);
+			return;
+		}
+		if (!idStr::Icmp(args.Argv(2), "inRound")) {
+			gameLocal.Printf("[PLPMOD] [AM Display] In Round: %s \n", player->InRound ? "true" : "false");
+			return;
+		}
+		if (!idStr::Icmp(args.Argv(2), "enemies_left")) {
+			gameLocal.Printf("[PLPMOD] [AM Display] Enemies Left: %d \n", player->EnemiesLeft);
+			return;
+		}
+	}
+
+}
+// PLPMOD :: Manage Runes
+// give, has, using, toggle, add, remove
+/*
+	/plpAM
+*/
+void Cmd_PLPRM_f(const idCmdArgs& args) {
+	idPlayer* player = gameLocal.GetLocalPlayer();
+	int sp = player->SkillPoints;
+	// GET INVENTORY
+
+	if (!player) {
+		gameLocal.Warning("[PLPMOD] Cmd_PLPRM_f() - local player is NULL");
+		return;
+	}
+	if (args.Argc() <= 1) {
+		gameLocal.Printf("[PLPMOD] usage: plpRM <option>\n");
+		gameLocal.Printf("\ttry 'give <id>' 'has <id>' 'using <id>' 'toggle <id>' 'add <id>' 'remove <id>' 'display <type>'\n");
+		return;
+	}
+	// 
+	if (!idStr::Icmp(args.Argv(1), "give")) {
+		// Give Rune ::
+		// S1: Check if item exists
+		// S2: Check if player can afford item (item.cost > player.SP)
+		// S3: Give item
+		player->GiveItem(args.Argv(2));
+		gameLocal.Printf("[PLPMOD] [RM] Rune Given: %s \n",args.Argv(2));
+	}
+	if (!idStr::Icmp(args.Argv(1), "has")) {
+		bool hasRune = player->HasRune(args.Argv(2));
+		gameLocal.Printf("[PLPMOD] [RM] Has Rune? %s \n", hasRune ? "TRUE" : "FALSE");
+	}
+	if (!idStr::Icmp(args.Argv(1), "using")) {
+		bool hasRune = player->IsRuneActive(args.Argv(2));
+		gameLocal.Printf("[PLPMOD] [RM] Using Rune? %s \n", hasRune ? "TRUE" : "FALSE");
+	}
+	if (!idStr::Icmp(args.Argv(1), "toggle")) {
+		// S1: Check if item exists
+		gameLocal.Printf("[PLPMOD] [RM] Toggling [Rune] %s ... \n", args.Argv(2));
+	}
+	if (!idStr::Icmp(args.Argv(1), "add")) {
+		// S1: Check if item exists
+		// S2: Check if CAN ADD
+		gameLocal.Printf("[PLPMOD] [RM] Adding [Rune] %s ... \n", args.Argv(2));
+	}
+	if (!idStr::Icmp(args.Argv(1), "remove")) {
+		// S1: Check if item exists
+		gameLocal.Printf("[PLPMOD] [RM] Removing [Rune] %s ... \n", args.Argv(2));
+	}
+	if (!idStr::Icmp(args.Argv(1), "display")) {
+		if (args.Argc() <= 2) {
+			gameLocal.Printf("[PLPMOD] Display function requires third parameter\n");
+			gameLocal.Printf("\ttry 'display has' 'display using' 'display unowned'\n");
+			return;
+		}
+		if (!idStr::Icmp(args.Argv(2), "has")) {
+			gameLocal.Printf("[PLPMOD] [RM] Listing all owned Runes... \n");
+			return;
+		}
+		if (!idStr::Icmp(args.Argv(2), "using")) {
+			gameLocal.Printf("[PLPMOD] [RM] Listing all Runes being used... \n");
+			return;
+		}
+		if (!idStr::Icmp(args.Argv(2), "unowned")) {
+			gameLocal.Printf("[PLPMOD] [RM] Listing all unowned Runes... \n");
+			return;
+		}
 	}
 
 }
@@ -3286,9 +3410,14 @@ void idGameLocal::InitConsoleCommands( void ) {
 // squirrel: Mode-agnostic buymenus
 	cmdSystem->AddCommand( "buyMenu",				Cmd_ToggleBuyMenu_f,		CMD_FL_GAME,				"Toggle buy menu (if in a buy zone and the game type supports it)" );
 	cmdSystem->AddCommand( "buy",					Cmd_BuyItem_f,				CMD_FL_GAME,				"Buy an item (if in a buy zone and the game type supports it)" );
+	/*
+		PLPMOD :: 
+	*/
 	// GET CHAR POSITION
-	cmdSystem->AddCommand("locate",					Cmd_Locate_f,				CMD_FL_GAME,				"Print coords of player"); // PLP_MOD :: ADDED
-	cmdSystem->AddCommand("plpSP",					Cmd_PLPSP_f,				CMD_FL_GAME,				"[PLP_MOD] Manage Skill Points of self"); // plp_mod should add correctly?
+	cmdSystem->AddCommand("locate",					Cmd_Locate_f,				CMD_FL_GAME,				"Print coords of player");
+	cmdSystem->AddCommand("plpSP",					Cmd_PLPSP_f,				CMD_FL_GAME,				"[PLP_MOD] Manage Skill Points of self");
+	cmdSystem->AddCommand("plpAM",					Cmd_PLPAM_f,				CMD_FL_GAME,				"[PLP_MOD] Arena Management");
+	cmdSystem->AddCommand("plpRM",					Cmd_PLPRM_f,				CMD_FL_GAME,				"[PLP_MOD] Rune Management");
 // RITUAL END
 
 }

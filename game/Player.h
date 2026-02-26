@@ -820,18 +820,28 @@ public:
 	/*
 	VARIABLES for arena management
 	*/
-	int						round;
-	bool					inRound;
-	int						enemiesLeft;
-	int						skillPoints;
+	int						CurrentRound;
+	bool					InRound;
+	int						EnemiesLeft;
+	int						SkillPoints;
 
 	/*
 	FUNCTIONS for arena management
 	*/
 	void					StartRound();
+	void					SpawnWave();
+	void					SpawnRandomEnemy();
 	void					EndRound();
 	void					OpenGUI( int guiID );
 	void					GiveSkillPoints( int points );
+	/*
+	FUNCTIONS for rune management
+	*/
+	bool					HasRune(const char* name);
+	bool					IsRuneActive(const char* name);
+	bool					ToggleRune(const char* name);
+	bool					AddRune(const char* name);
+	bool					RemoveRune(const char* name);
 
 protected:
 	void					SetupHead( const char* modelKeyName = "", idVec3 headOffset = idVec3(0, 0, 0) );

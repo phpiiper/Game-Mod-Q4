@@ -1551,10 +1551,10 @@ void idPlayer::Init( void ) {
 	/*
 	PLP MOD :: 1552 | INIT custom variables
 	*/
-	round					= 1;
-	inRound					= false;
-	enemiesLeft				= -1;
-	skillPoints				= 0;
+	CurrentRound			= 1;
+	InRound					= false;
+	EnemiesLeft				= -1;
+	SkillPoints				= 0;
 
 	// Remove any hearing loss that may be set up from the last map
 	soundSystem->FadeSoundClasses( SOUNDWORLD_GAME, 0, 0.0f, 0 );
@@ -14103,11 +14103,32 @@ PLP MOD :: 14102 | DEFINING custom functions
 */
 void idPlayer::StartRound() 
 {
-	
+	CurrentRound += 1;
+	InRound = true;
+	SpawnWave();
+}
+void idPlayer::SpawnWave() 
+{
+	int spawnCount = 20 + (CurrentRound % 5 * 2);
+	if (CurrentRound < 5)
+	{
+		spawnCount = 20;
+	}
+	else if (CurrentRound < 10)
+	{
+		spawnCount = 30;
+	}
+}
+void idPlayer::SpawnRandomEnemy()
+{
+	// Get all enemy types that can be spawned (key AllowedRound <= currentRound)
+	// Then randomize function on spawning enemy w/ weight (how to do this again...?)
 }
 void idPlayer::EndRound()
 {
-
+	InRound = false;
+	// OpenGUI();
+	GiveSkillPoints(1);
 }
 void idPlayer::OpenGUI(int guiID)
 {
@@ -14115,5 +14136,45 @@ void idPlayer::OpenGUI(int guiID)
 }
 void idPlayer::GiveSkillPoints(int points)
 {
+	SkillPoints += points;
+}
 
+bool idPlayer::HasRune(const char* name)
+{
+	// Check if item_rune exists in name???
+	idDict* item = FindInventoryItem(name);
+	if (!item){
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
+
+bool idPlayer::IsRuneActive(const char* name)
+{
+	bool itemExists = HasRune(name);
+	if (!itemExists) { return false; }
+
+	return false;
+}
+
+
+bool idPlayer::ToggleRune(const char* name)
+{
+	// inventory.items.list
+	return false;
+}
+
+
+bool idPlayer::AddRune(const char* name)
+{
+	return true;
+}
+
+
+bool idPlayer::RemoveRune(const char* name)
+{
+	return true;
 }

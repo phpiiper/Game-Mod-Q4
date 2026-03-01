@@ -71,7 +71,19 @@ void rvMonsterGrunt::Spawn ( void ) {
 	// Enraged to start?
 	if ( spawnArgs.GetBool ( "preinject" ) ) {
 		RageStart ( );
-	}	
+	}
+	// PLPMOD :: CHECK HERE
+	idPlayer* player = gameLocal.GetLocalPlayer();
+	if (!player) {
+		gameLocal.Warning("[PLPMOD] Cmd_PLPRM_f() - local player is NULL");
+	} 
+	else {
+		bool inRound = player->InRound;
+		if (inRound) {
+			player->EnemiesLeft += 1;
+			gameLocal.Printf("[PLPMOD] rvMonsterGrunt::Spawn - Enemy (+1)");
+		}
+	}
 }
 
 /*
@@ -196,6 +208,19 @@ rvMonsterGrunt::OnDeath
 */
 void rvMonsterGrunt::OnDeath ( void ) {
 	RageStop ( );
+	// PLPMOD :: CHECK HERE
+	idPlayer* player = gameLocal.GetLocalPlayer();
+	if (!player) {
+		gameLocal.Warning("[PLPMOD] Cmd_PLPRM_f() - local player is NULL");
+	}
+	else {
+		bool inRound = player->InRound;
+		if (inRound) {
+			player->EnemiesLeft -= 1;
+			gameLocal.Printf("[PLPMOD] rvMonsterGrunt::OnDeath - Enemy (-1)");
+		}
+	}
+	// PLP MOD :: END
 	return idAI::OnDeath ( );
 }
 

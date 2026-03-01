@@ -3034,6 +3034,11 @@ void Cmd_PLPAM_f(const idCmdArgs& args) {
 		player->CurrentRound = (newValue > 0 ? newValue : 1);
 	}
 	if (!idStr::Icmp(args.Argv(1), "display")) {
+		if (args.Argc() <= 2) {
+			gameLocal.Printf("[PLPMOD] Display function requires third parameter\n");
+			gameLocal.Printf("\ttry 'display has' 'display round' 'display inRound' 'display enemies_left'\n");
+			return;
+		}
 		if (!idStr::Icmp(args.Argv(2), "round")) {
 			gameLocal.Printf("[PLPMOD] [AM Display] Round: %d \n", player->CurrentRound);
 			return;

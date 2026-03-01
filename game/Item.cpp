@@ -2394,6 +2394,7 @@ idItemRune::idItemRune() {
 	active = false;
 }
 
+
 /*
 ================
 idItemRune::Save
@@ -2417,10 +2418,11 @@ void idItemRune::Restore(idRestoreGame* savefile) {
 idItemRune::Spawn
 ================
 */
-void idItemRune::Spawn(void) {
-	// Not required ??? :: PLP_MOD :: 2421
-}
 
+void idItemRune::Spawn(void) {
+	// HOW TO FIX...
+	spawnArgs.SetBool("objEnabled", false);
+}
 /*
 ================
 idItemRune::GiveToPlayer

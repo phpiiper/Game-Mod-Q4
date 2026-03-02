@@ -7809,6 +7809,32 @@ idEntity* idGameLocal::HitScan(
 					}
 				}
 			}
+
+			// PLP_MOD :: blaster only hitscan hit?
+			idPlayer* player = GetLocalPlayer();
+			if (player) {
+				int currentWeapon = player->GetCurrentWeapon();
+				int blaster = player->GetWeaponIndex("weapon_blaster");
+				bool InRound = player->InRound;
+				if (currentWeapon == blaster) {
+					// PLPMOD :: 7820
+					idPhysics* phys = ent->GetPhysics();
+					idVec3 velocity = phys->GetLinearVelocity();
+					velocity.z = 10000;
+					phys->SetLinearVelocity(velocity);
+					// FIX TO ADD FORCE (probably)
+					
+					// IF IN ROUND...
+					if (InRound) {
+						// IF runes are active... (and ent is Monster_[name])... do thing here
+						
+						// Burn
+						// Freeze
+						// Uppie
+
+					}
+				}
+			}
 			
 			// End of reflection
 			return ent;

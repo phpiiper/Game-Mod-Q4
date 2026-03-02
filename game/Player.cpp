@@ -5381,9 +5381,25 @@ void idPlayer::GiveItem( const char *itemname ) {
 			}
 		}
 	}
+		// CUSTOM give for runes?
+		if (!idStr::Icmpn(itemname, "item_rune_", 10)) {
+			gameLocal.Printf("PLP MOD 5385 :: Get it correctly here? \n");
+			const idDeclEntityDef *def = gameLocal.FindEntityDef(itemname, false);
+			if (def) {
+				int runeId = def->dict.GetInt("id", "-1");
+				int runeType = def->dict.GetInt("type", "-1");
+				int runeLevel = def->dict.GetInt("level", "-1");
+				gameLocal.Printf("PLP MOD 5391 :: Giving rune id=%d, type=%d, level=%d\n", runeId, runeType, runeLevel);
+				// printing type + level to ensure its correct
+				inventory.runes[runeId] = 1; // 1 = active (anything else:: def. 0 ? is inactive)
+			}
+
+			return;
+		}
 
 	// spawn the item if the player is alive
 	if ( health > 0 && idStr::Icmp( itemname, "ammorefill" ) ) {
+		gameLocal.Printf("PLP MOD 5350 :: E \n");
 		gameLocal.SpawnEntityDef( args );
 	}
 
@@ -14142,39 +14158,63 @@ void idPlayer::GiveSkillPoints(int points)
 bool idPlayer::HasRune(const char* name)
 {
 	// Check if item_rune exists in name???
-	idDict* item = FindInventoryItem(name);
-	if (!item){
+	const idDeclEntityDef* def = gameLocal.FindEntityDef(name, false);
+	if (def){
+		int runeId = def->dict.GetInt("id", "-1");
+		if (runeId != -1 && inventory.runes[runeId] != 0)  {return true; }
 		return false;
 	}
-	else {
-		return true;
-	}
+	return false;
 }
-
 
 bool idPlayer::IsRuneActive(const char* name)
 {
-	bool itemExists = HasRune(name);
-	if (!itemExists) { return false; }
-
+	if (HasRune(name)) {
+		const idDeclEntityDef* def = gameLocal.FindEntityDef(name, false);
+		int runeId = def->dict.GetInt("id", "-1");
+		if (inventory.runes[runeId] == 1) { return true; }
+		return false;
+	}
 	return false;
 }
 
 
 bool idPlayer::ToggleRune(const char* name)
 {
-	// inventory.items.list
+	if (HasRune(name)) {
+		const idDeclEntityDef* def = gameLocal.FindEntityDef(name, false);
+		int runeId = def->dict.GetInt("id", "-1");
+		if (inventory.runes[runeId] == 1) {
+			inventory.runes[runeId] == -1;
+		}
+		else {
+			inventory.runes[runeId] == 1;
+		}
+		return true;
+	}
 	return false;
 }
 
 
 bool idPlayer::AddRune(const char* name)
 {
-	return true;
+	if (HasRune(name)) {
+		const idDeclEntityDef* def = gameLocal.FindEntityDef(name, false);
+		int runeId = def->dict.GetInt("id", "-1");
+		inventory.runes[runeId] = 1;
+		return false;
+	}
+	return false;
 }
 
 
 bool idPlayer::RemoveRune(const char* name)
 {
-	return true;
+	if (HasRune(name)) {
+		const idDeclEntityDef* def = gameLocal.FindEntityDef(name, false);
+		int runeId = def->dict.GetInt("id", "-1");
+		inventory.runes[runeId] = -1;
+		return false;
+	}
+	return false;
 }

@@ -2378,57 +2378,57 @@ void riDeadZonePowerup::Event_ResetSpawn( void ) {
 
 /*
 ================
-idItemRune::Pickup :: PLP_MOD :: 2381
+plpItemRune::Pickup :: PLP_MOD :: 2381
 ================
 */
 
-CLASS_DECLARATION(idItem, idItemRune)
+CLASS_DECLARATION(idItem, plpItemRune)
 END_CLASS
 
 /*
 ================
-idItemRune::idItemRune
+plpItemRune::plpItemRune
 ================
 */
-idItemRune::idItemRune() {
+plpItemRune::plpItemRune() {
 	active = false;
 }
 
 
 /*
 ================
-idItemRune::Save
+plpItemRune::Save
 ================
 */
-void idItemRune::Save(idSaveGame* savefile) const {
+void plpItemRune::Save(idSaveGame* savefile) const {
 	savefile->WriteBool(active);
 }
 
 /*
 ================
-idItemRune::Restore
+plpItemRune::Restore
 ================
 */
-void idItemRune::Restore(idRestoreGame* savefile) {
+void plpItemRune::Restore(idRestoreGame* savefile) {
 	savefile->ReadBool(active);	
 }
 
 /*
 ================
-idItemRune::Spawn
+plpItemRune::Spawn
 ================
 */
 
-void idItemRune::Spawn(void) {
+void plpItemRune::Spawn(void) {
 	// HOW TO FIX...
 	spawnArgs.SetBool("objEnabled", false);
 }
 /*
 ================
-idItemRune::GiveToPlayer
+plpItemRune::GiveToPlayer
 ================
 */
-bool idItemRune::GiveToPlayer(idPlayer* player) {
+bool plpItemRune::GiveToPlayer(idPlayer* player) {
 	if (player == NULL || player->spectating) {
 		return false;
 	}
@@ -2450,18 +2450,18 @@ bool idItemRune::GiveToPlayer(idPlayer* player) {
 
 /*
 ================
-idItemRune::Think
+plpItemRune::Think
 ================
 */
-void idItemRune::Think(void) {
+void plpItemRune::Think(void) {
 	
 }
 
 /*
 ================
-idItemRune::Pickup
+plpItemRune::Pickup
 ================
 */
-bool idItemRune::Pickup(idPlayer* player) {
+bool plpItemRune::Pickup(idPlayer* player) {
 	return false;
 }

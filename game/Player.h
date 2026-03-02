@@ -57,6 +57,9 @@ const int	ASYNC_PLAYER_INV_WPMOD_BITS = 3;							// 3 bits (max of 3 mods per gu
 // NOTE: protocol 69 used 6 bits, but that's only used for client -> server traffic, so doesn't affect backwards protocol replay compat
 const int	IMPULSE_NUMBER_OF_BITS		= 8;							// allows for 2<<X impulses
 
+// PLP MOD
+const int	MAX_RUNES = 10;
+
 #define MAX_CONCURRENT_VOICES	3
 
 // RAVEN BEGIN
@@ -227,6 +230,9 @@ public:
 	int						startingAmmo[ MAX_WEAPONS ];
 
  	int						lastGiveTime;
+
+	// PLP MOD
+	int						runes[ MAX_RUNES ]{ 0 };	// 0 = unowned, -1 = inactive, 1 = active
  	
 	idList<idDict *>		items;
 	idStrList				pdas;

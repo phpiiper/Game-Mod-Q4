@@ -727,25 +727,9 @@ bool idProjectile::Collide( const trace_t &collision, const idVec3 &velocity, bo
    		return true;
    	}
 
-	// If the hit entity is bound to an actor use the actor instead --> FIGURE OUT BETTER LOCATION FOR THIS
 	if ( ent->GetTeamMaster( ) && ent->GetTeamMaster( )->IsType ( idActor::GetClassType() ) ) {
 		actualHitEnt = ent;
 		ent = ent->GetTeamMaster( );
-		idPlayer* player = gameLocal.GetLocalPlayer();
-		if (player) {
-			int currentWeapon = player->GetCurrentWeapon();
-			int rocketLauncher = player->GetWeaponIndex("weapon_Rocketlauncher");
-			gameLocal.Printf("738 :: currentWeapon to rocketLauncher : %d, %d \n", currentWeapon, rocketLauncher);
-			if (currentWeapon == rocketLauncher) {
-				// PLPMOD :: 740
-				idPhysics* phys = ent->GetPhysics();
-				idVec3 velocity = phys->GetLinearVelocity();
-				velocity.z = 10000;
-				phys->SetLinearVelocity(velocity);
-			}
-
-		}
-		
 	}
 
 	// Can the projectile damage?  

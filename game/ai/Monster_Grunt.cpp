@@ -40,6 +40,9 @@ private:
 	stateResult_t		State_Torso_Pain		( const stateParms_t& parms );
 	stateResult_t		State_Torso_LeapAttack	( const stateParms_t& parms );
 
+	// PLP_MOD :: elemental type
+	int					elementalType;
+
 	CLASS_STATES_PROTOTYPE ( rvMonsterGrunt );
 };
 
@@ -82,6 +85,9 @@ void rvMonsterGrunt::Spawn ( void ) {
 		if (inRound) {
 			player->EnemiesLeft += 1;
 			gameLocal.Printf("[PLPMOD] rvMonsterGrunt::Spawn - Enemy (+1)");
+			// SET ELEMENTAL TYPE (3 types now to be easy)
+			elementalType = 0; // [0 = fire, 1 = ice, 2 = wind]
+
 		}
 	}
 }

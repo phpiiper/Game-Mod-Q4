@@ -364,16 +364,16 @@ private:
 /*
 ===============================================================================
 
-  idItemRune :: PLP_MOD :: 367
+  plpItemRune :: PLP_MOD :: 367
 
 ===============================================================================
 */
 
-class idItemRune: public idItem {
+class plpItemRune: public idItem {
 public:
-	CLASS_PROTOTYPE(idItemRune);
+	CLASS_PROTOTYPE(plpItemRune);
 
-	idItemRune();
+	plpItemRune();
 
 	void					Save(idSaveGame* savefile) const;
 	void					Restore(idRestoreGame* savefile);

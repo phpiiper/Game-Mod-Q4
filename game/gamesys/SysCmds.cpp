@@ -3005,7 +3005,7 @@ void Cmd_PLPSP_f( const idCmdArgs& args ) {
 	}
 
 }
-// PLPMOD :: Manage Arema
+// PLPMOD :: Manage Arena
 // start, end, setRound, openGUI
 /*
 	/plpAM 
@@ -3019,10 +3019,13 @@ void Cmd_PLPAM_f(const idCmdArgs& args) {
 	}
 	if (args.Argc() <= 1) {
 		gameLocal.Printf("[PLPMOD] usage: plpAM <option>\n");
-		gameLocal.Printf("\ttry 'start' 'end' 'set_round' 'openGUI' 'display <variable> '\n");
+		gameLocal.Printf("\ttry 'start' 'end' 'set_round' 'gui' 'display <variable> ' 'actions <variable>'\n");
 		return;
 	}
 	// 
+	if (!idStr::Icmp(args.Argv(1), "gui")) {
+		player->ToggleGUI();
+	}
 	if (!idStr::Icmp(args.Argv(1), "start")) {
 		player->StartRound();
 	}
@@ -3052,6 +3055,25 @@ void Cmd_PLPAM_f(const idCmdArgs& args) {
 			return;
 		}
 	}
+	if (!idStr::Icmp(args.Argv(1), "actions")) {
+		if (args.Argc() <= 2) {
+			gameLocal.Printf("[PLPMOD] Actions function requires third parameter\n");
+			gameLocal.Printf("\ttry 'actions spawnrandom' 'actions setup'\n");
+			return;
+		}
+		if (!idStr::Icmp(args.Argv(2), "spawnrandom")) {
+			player->SpawnRandomEnemy();
+			return;
+		}
+		if (!idStr::Icmp(args.Argv(2), "setup")) {
+			cmdSystem->BufferCommandText(CMD_EXEC_NOW, "plpRM give all");
+			cmdSystem->BufferCommandText(CMD_EXEC_NOW, "plpRM add all");
+			cmdSystem->BufferCommandText(CMD_EXEC_NOW, "give all");
+			cmdSystem->BufferCommandText(CMD_EXEC_NOW, "plpAM start");
+			cmdSystem->BufferCommandText(CMD_EXEC_NOW, "god");
+			return;
+		}
+	}
 
 }
 // PLPMOD :: Manage Runes
@@ -3070,21 +3092,41 @@ void Cmd_PLPRM_f(const idCmdArgs& args) {
 	}
 	if (args.Argc() <= 1) {
 		gameLocal.Printf("[PLPMOD] usage: plpRM <option>\n");
-		gameLocal.Printf("\ttry 'give <id>' 'has <id>' 'using <id>' 'toggle <id>' 'add <id>' 'remove <id>' 'display <type>'\n");
+		gameLocal.Printf("\ttry 'give <id>' 'buy <id>' 'has <id>' 'using <id>' 'toggle <id>' 'add <id>' 'remove <id>' 'display <type>'\n");
 		return;
 	}
 	// 
 	if (!idStr::Icmp(args.Argv(1), "give")) {
 		// Give Rune ::
+		bool found = false;
+		if (!idStr::Icmp(args.Argv(2), "all")) {
+			int i;
+			for (i = 0; i < MAX_RUNES; i++) {
+				if (player->inventory.runes[i] == 0) {
+					player->GiveRune(player->inventory.RUNE_DEF_NAMES[i]);
+				}
+			}
+			gameLocal.Printf("[PLPMOD] [RM] Given ALL runes\n");
+			return;
+		}
+		found = player->GiveRune(args.Argv(2));
+		gameLocal.Printf("[PLPMOD] [RM] Rune %s Given: %s \n", found ? "WAS" : "NOT", args.Argv(2));
+	}
+	if (!idStr::Icmp(args.Argv(1), "buy")) {
+		// Give Rune ::
 		// S1: Check if item exists
 		// S2: Check if player can afford item (item.cost > player.SP)
 		// S3: Give item
-		player->GiveItem(args.Argv(2));
-		gameLocal.Printf("[PLPMOD] [RM] Rune Given: %s \n",args.Argv(2));
+		bool boughtRune = player->BuyRune(args.Argv(2));
+		if (boughtRune) {
+			gameLocal.Printf("[PLPMOD] [RM] [O] Rune Buy: %s \n", args.Argv(2));
+		} else {
+			gameLocal.Printf("[PLPMOD] [RM] [X] Rune Buy: %s \n", args.Argv(2));
+		}
 	}
 	if (!idStr::Icmp(args.Argv(1), "has")) {
 		bool hasRune = player->HasRune(args.Argv(2));
-		gameLocal.Printf("[PLPMOD] [RM] Has Rune? %s \n", hasRune ? "TRUE" : "FALSE");
+		gameLocal.Printf("[PLPMOD] [RM] Using Rune? %s \n", hasRune ? "TRUE" : "FALSE");
 	}
 	if (!idStr::Icmp(args.Argv(1), "using")) {
 		bool hasRune = player->IsRuneActive(args.Argv(2));
@@ -3092,16 +3134,26 @@ void Cmd_PLPRM_f(const idCmdArgs& args) {
 	}
 	if (!idStr::Icmp(args.Argv(1), "toggle")) {
 		// S1: Check if item exists
-		gameLocal.Printf("[PLPMOD] [RM] Toggling [Rune] %s ... \n", args.Argv(2));
+		bool hasRune = player->ToggleRune(args.Argv(2));
+		gameLocal.Printf("[PLPMOD] [RM] Toggling [Rune] was %s ... \n", hasRune ? "SUCCESSFUL" : "A FAILURE");
 	}
 	if (!idStr::Icmp(args.Argv(1), "add")) {
-		// S1: Check if item exists
-		// S2: Check if CAN ADD
-		gameLocal.Printf("[PLPMOD] [RM] Adding [Rune] %s ... \n", args.Argv(2));
+		bool addedRune = player->AddRune(args.Argv(2));
+		if (!idStr::Icmp(args.Argv(2), "all")) { // activate all owned
+			for (int i = 0; i < MAX_RUNES; i++) {
+				if (player->inventory.runes[i] != 0) {
+					player->AddRune(player->inventory.RUNE_DEF_NAMES[i]);
+				}
+			}
+			gameLocal.Printf("[PLPMOD] [RM] Added ALL runes\n");
+			return;
+		}
+		gameLocal.Printf("[PLPMOD] [RM] Adding [Rune] was %s ... \n", addedRune ? "SUCCESSFUL" : "A FAILURE");
 	}
 	if (!idStr::Icmp(args.Argv(1), "remove")) {
 		// S1: Check if item exists
-		gameLocal.Printf("[PLPMOD] [RM] Removing [Rune] %s ... \n", args.Argv(2));
+		bool rmRune = player->RemoveRune(args.Argv(2));
+		gameLocal.Printf("[PLPMOD] [RM] Removing [Rune] was %s ... \n", rmRune ? "SUCCESSFUL" : "A FAILURE");
 	}
 	if (!idStr::Icmp(args.Argv(1), "display")) {
 		if (args.Argc() <= 2) {
@@ -3111,14 +3163,44 @@ void Cmd_PLPRM_f(const idCmdArgs& args) {
 		}
 		if (!idStr::Icmp(args.Argv(2), "has")) {
 			gameLocal.Printf("[PLPMOD] [RM] Listing all owned Runes... \n");
+			for (int i = 0; i < MAX_RUNES; i++) {
+				if (player->inventory.runes[i] != 0) {
+					const char* itemname = player->inventory.RUNE_DEF_NAMES[i];
+					if (!itemname) { return; }
+					const idDeclEntityDef* def = gameLocal.FindEntityDef(itemname, false);
+					if (def) {
+						gameLocal.Printf("> %s \n", def->dict.GetString("inv_name"));
+					}
+				}
+			}
 			return;
 		}
 		if (!idStr::Icmp(args.Argv(2), "using")) {
 			gameLocal.Printf("[PLPMOD] [RM] Listing all Runes being used... \n");
+			for (int i = 0; i < MAX_RUNES; i++) {
+				if (player->inventory.runes[i] == 1) {
+					const char* itemname = player->inventory.RUNE_DEF_NAMES[i];
+					if (!itemname) { return; }
+					const idDeclEntityDef* def = gameLocal.FindEntityDef(itemname, false);
+					if (def) {
+						gameLocal.Printf("> %s \n", def->dict.GetString("inv_name"));
+					}
+				}
+			}
 			return;
 		}
 		if (!idStr::Icmp(args.Argv(2), "unowned")) {
 			gameLocal.Printf("[PLPMOD] [RM] Listing all unowned Runes... \n");
+			for (int i = 0; i < MAX_RUNES; i++) {
+				if (player->inventory.runes[i] == 0) {
+					const char* itemname = player->inventory.RUNE_DEF_NAMES[i];
+					if (!itemname) { return; }
+					const idDeclEntityDef* def = gameLocal.FindEntityDef(itemname, false);
+					if (def) {
+						gameLocal.Printf("> %s \n", def->dict.GetString("inv_name"));
+					}
+				}
+			}
 			return;
 		}
 	}

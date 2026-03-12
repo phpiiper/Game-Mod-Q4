@@ -139,6 +139,21 @@ idAI::idAI ( void ) {
 	actionAnimNum	= 0;
 	actionSkipTime	= 0;
 	actionTime		= 0;
+
+	// PLP
+	PLPType			= -1;
+	PLPInterval		= 60; // 1 sec
+
+	PLPIsBurning	= false;
+	PLPBurnLvl		= -1;
+	PLPBTicks		= 0;
+
+	PLPIsFreezing	= false;
+	PLPFreezeLvl	= -1;
+	PLPFTicks		= 0;
+	
+	PLPUppieLvl		= -1;
+
 }
 
 /*
@@ -877,6 +892,24 @@ void idAI::Spawn( void ) {
 		gameLocal.Warning( "Unhidden AI placed in map (will be constantly active): %s (%s)", name.c_str(), GetPhysics()->GetOrigin().ToString() );
 	}
 
+
+	// PLPMOD :: CHECK HERE
+	idPlayer* player = gameLocal.GetLocalPlayer();
+	if (!player) {
+		gameLocal.Warning("[PLPMOD] Cmd_PLPRM_f() - local player is NULL \n");
+	}
+	else {
+		bool inRound = player->InRound;
+		if (inRound) {
+			player->EnemiesLeft += 1;
+			if (!idStr::Icmp(GetEntityDefName(), "monster_grunt")) {
+				// SET ELEMENTAL TYPE (3 types now to be easy) :: randomly set
+				PLPType = gameLocal.random.RandomInt(3); // [0 = fire, 1 = ice, 2 = wind
+				gameLocal.Printf("[PLPMOD] AI::Spawn - Enemy (+1) | Set Element Type to %s\n", PLPType == 0 ? "Fire" : (PLPType == 1 ? "Ice" : "Wind"));
+			}
+		}
+	}
+
 	Begin ( );
 
 	// RAVEN BEGIN
@@ -1231,6 +1264,33 @@ void idAI::Think( void ) {
 	if ( fl.hidden && move.fl.allowHiddenMove ) {
 		// UpdateAnimation won't call frame commands when hidden, so call them here when we allow hidden movement
 		animator.ServiceAnims( gameLocal.previousTime, gameLocal.time );
+	}
+
+	// PLP :: THINK HERE
+	if (PLPIsBurning) {
+		if (PLPBTicks > 0) PLPBTicks--;
+		if (PLPBTicks % PLPInterval == 0) {
+			int delHealth = round(health * 0.01f * PLPBurnLvl);
+			health -= delHealth;
+			gameLocal.Printf("[BURNING] %d HP, ticks left: %d\n", delHealth, PLPBTicks);
+		}
+		if (PLPBTicks <= 0) {
+			gameLocal.Printf("[BURNING] Stop\n");
+			PLPIsBurning = false;
+		}
+	}
+	if (PLPIsFreezing) {
+		if (PLPFTicks > 0) PLPFTicks--;
+		GetPhysics()->SetLinearVelocity(vec3_zero);
+		StopMove(MOVE_STATUS_DONE);
+
+		if (PLPFTicks % PLPInterval == 0) {
+			gameLocal.Printf("[FREEZING] Still, ticks left: %d\n", PLPFTicks);
+		}
+		if (PLPFTicks <= 0) {
+			gameLocal.Printf("[FREEZING] Stop\n");
+			PLPIsFreezing = false;
+		}
 	}
 
 	aasSensor->Update();
@@ -3684,6 +3744,27 @@ void idAI::OnDeath( void ){
 
 	ExecScriptFunction( funcs.death );
 
+
+
+	// PLPMOD :: CHECK HERE
+	idPlayer* player = gameLocal.GetLocalPlayer();
+	if (!player) {
+		gameLocal.Warning("[PLPMOD] Cmd_PLPRM_f() - local player is NULL\n");
+	}
+	else {		
+		if (player->InRound && PLPType != -1) {
+			player->EnemiesLeft -= 1;
+			gameLocal.Printf("[PLPMOD] AI::OnDeath - Enemy (-1)\n");
+			PLPIsBurning = false;
+			PLPIsFreezing = false;
+		}
+		if (player->EnemiesLeft <= 0) {
+			player->EndRound();
+		}
+		player->PLPUpdateHUD();
+	}
+	// PLP MOD :: END
+
 /* DONT DROP ANYTHING FOR NOW
 	float rVal = gameLocal.random.RandomInt( 100 );
 
@@ -5149,3 +5230,26 @@ bool idAI::CheckDeathCausesMissionFailure( void )
 	}
 	return false;
 }
+
+
+// PLP
+void idAI::PLPBurn(int lvl) {
+	gameLocal.Printf("[AI] [PLP] Activate Burn %d? %s \n", lvl, PLPIsBurning ? "NO" : "YES");
+	// burning hp
+	if (!PLPIsBurning) {
+		PLPIsBurning = true;
+		PLPBurnLvl = lvl;
+		PLPBTicks = 60 * 5 * (PLPBurnLvl);
+	}
+}
+
+void idAI::PLPFreeze(int lvl) {
+	gameLocal.Printf("[AI] [PLP] Activate Freeze %d? %s \n", lvl, PLPIsFreezing ? "NO" : "YES");
+	// freeze movements
+	if (!PLPIsFreezing) {
+		PLPIsFreezing = true;
+		PLPFreezeLvl = lvl;
+		PLPFTicks = 60 * 5 * (PLPFreezeLvl);
+	}
+}
+

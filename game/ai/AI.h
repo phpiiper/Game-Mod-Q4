@@ -478,8 +478,24 @@ public:
  	bool					IsCoverValid					( void ) const;
 	virtual bool			IsCrouching						( void ) const;
 
+	void					PLPBurn							(int lvl);
+	void					PLPFreeze						(int lvl);
+
 
 public:
+	// PLP
+	int						PLPType;
+	int						PLPInterval;
+
+	bool					PLPIsBurning;
+	int						PLPBurnLvl;
+	int						PLPBTicks;
+
+	bool					PLPIsFreezing;
+	int						PLPFreezeLvl;
+	int						PLPFTicks;
+
+	int						PLPUppieLvl;
 
 	idLinkList<idAI>		simpleThinkNode;
 

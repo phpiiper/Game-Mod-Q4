@@ -4181,6 +4181,19 @@ bool idEntity::HandleGuiCommands( idEntity *entityGui, const char *cmds ) {
 				continue;
 			}
 
+			// if we get to this point we don't know how to handle it// PLP_MOD :: handle before UnreadToken
+			if (token.Icmp("plpAM") == 0 || token.Icmp("plpRM") == 0) {
+				idStr consoleCmd = token;
+				consoleCmd += " ";
+				while (src.ReadToken(&token2)) {
+					if (token2 == ";") { break; }
+					consoleCmd += token2;
+					consoleCmd += " ";
+				}
+				cmdSystem->BufferCommandText(CMD_EXEC_NOW, consoleCmd.c_str());
+				continue;
+			}
+
 			// if we get to this point we don't know how to handle it
 			src.UnreadToken(&token);
 			if ( !HandleSingleGuiCommand( entityGui, &src ) ) {
@@ -4199,10 +4212,17 @@ bool idEntity::HandleGuiCommands( idEntity *entityGui, const char *cmds ) {
 					}
 				}
 
-				if ( i == c ) {
-					// not handled
-					common->DPrintf( "idEntity::HandleGuiCommands: '%s' not handled\n", token.c_str() );
-					src.ReadToken( &token );
+				if (i == c) {
+					// PLP_MOD :: forward unknown commands to console
+					idStr consoleCmd = token;
+					consoleCmd += " ";
+					while (src.ReadToken(&token2)) {
+						if (token2 == ";") { break; }
+						consoleCmd += token2;
+						consoleCmd += " ";
+					}
+					common->Printf("PLP :: HandleGuiCommands fallback :: '%s'\n", consoleCmd.c_str());
+					cmdSystem->BufferCommandText(CMD_EXEC_NOW, consoleCmd.c_str());
 				}
 			}
 

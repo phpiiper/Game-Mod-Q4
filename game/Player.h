@@ -58,7 +58,7 @@ const int	ASYNC_PLAYER_INV_WPMOD_BITS = 3;							// 3 bits (max of 3 mods per gu
 const int	IMPULSE_NUMBER_OF_BITS		= 8;							// allows for 2<<X impulses
 
 // PLP MOD
-const int	MAX_RUNES = 10;
+const int	MAX_RUNES = 12;
 
 #define MAX_CONCURRENT_VOICES	3
 
@@ -232,7 +232,10 @@ public:
  	int						lastGiveTime;
 
 	// PLP MOD
-	int						runes[ MAX_RUNES ]{ 0 };	// 0 = unowned, -1 = inactive, 1 = active
+	int						runes[ MAX_RUNES ]{ 0 };	// Rune management states array :: 0 = unowned, -1 = inactive, 1 = active
+	const char*				RUNE_DEF_NAMES[MAX_RUNES];	// Rune management def name lookup table array
+
+	// END PLP MOD
  	
 	idList<idDict *>		items;
 	idStrList				pdas;
@@ -364,6 +367,10 @@ public:
 
  	idUserInterface *		hud;				// Common hud
 	idUserInterface *		mphud;				// hud overlay containing MP elements
+	
+	// PLP_MOD
+	idUserInterface *		plpRuneGUI;
+	bool					showPlpRuneGUI;
 	
 	idUserInterface *		objectiveSystem;
 	idUserInterface *		cinematicHud;
@@ -838,8 +845,11 @@ public:
 	void					SpawnWave();
 	void					SpawnRandomEnemy();
 	void					EndRound();
-	void					OpenGUI( int guiID );
+	void					ToggleGUI();
+	void					PLPUpdateHUD();
 	void					GiveSkillPoints( int points );
+	bool					BuyRune(const char* name);
+	bool					GiveRune(const char* name);
 	/*
 	FUNCTIONS for rune management
 	*/

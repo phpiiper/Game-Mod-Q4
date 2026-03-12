@@ -1,0 +1,1085 @@
+windowDef Desktop
+{
+	rect	0,0,640,480
+	visible	1
+	nocursor	0
+	string	"InRoundText"
+	NOT	-
+	Round	0
+	int	"Round"
+	0	onInit
+	{	namedEvent
+	switchToArenaWindow	;
+	namedEvent	"updatePLP"
+	;	}
+	-	1
+	float	"inRound"					0
+	float	"bought_item_rune_fire_i"	0
+	float	"bought_item_rune_fire_ii"	0
+	float	"bought_item_rune_fire_iii"	0
+	float	"bought_item_rune_ice_i"	0
+	float	"bought_item_rune_ice_ii"	0
+	float	"bought_item_rune_ice_iii"	0
+	float	"bought_item_rune_air_i"	0
+	float	"bought_item_rune_air_ii"	0
+	float	"bought_item_rune_air_iii"	0
+	float	"activated_item_rune_fire_i"	0
+	float	"activated_item_rune_fire_ii"	0
+	float	"activated_item_rune_fire_iii"	0
+	float	"activated_item_rune_ice_i"	0
+	float	"activated_item_rune_ice_ii"	0
+	float	"activated_item_rune_ice_iii"	0
+	float	"activated_item_rune_air_i"	0
+	float	"activated_item_rune_air_ii"	0
+	float	"activated_item_rune_air_iii"	0
+	float	"activated_item_rune_attack_i"	0
+	float	"activated_item_rune_attack_ii"	0
+	float	"activated_item_rune_attack_iii"	0
+
+
+	
+	int "EnemiesLeft" -1
+	int "Round" -1
+
+
+	onNamedEvent updatePLPUI {
+		set "ar_en_text::text" "$gui::EnemiesLeft";
+		set "ar_round_text::text" "$gui::Round";
+		
+		if ("gui::inRound"){
+			set "ar_en_text::visible" "1";
+			set "ar_round_text::visible" "1";
+		} else {
+			set "ar_en_text::visible" "0";
+			set "ar_round_text::visible" "0";
+		}
+
+		if ("gui::bought_item_rune_fire_i" == 1){
+			set "ru_bbtn_fire_i::text" "Sold";
+			set "ru_ebtn_fire_i::visible" "1";
+			if ("gui::activated_item_rune_fire_i" == 1){
+				set "ru_ebtn_fire_i::text" "Unequip";
+			} else {
+				set "ru_ebtn_fire_i::text" "Equip";
+			}
+		} else {
+			set "ru_bbtn_fire_i::text" "Buy";
+			set "ru_ebtn_fire_i::visible" "0";
+		}
+		if ("gui::bought_item_rune_fire_ii" == 1){
+			set "ru_bbtn_fire_ii::text" "Sold";
+			set "ru_ebtn_fire_ii::visible" "1";
+			if ("gui::activated_item_rune_fire_ii" == 1){
+				set "ru_ebtn_fire_ii::text" "Unequip";
+			} else {
+				set "ru_ebtn_fire_ii::text" "Equip";
+			}
+		} else {
+			set "ru_bbtn_fire_ii::text" "Buy";
+			set "ru_ebtn_fire_ii::visible" "0";
+		}
+		if ("gui::bought_item_rune_fire_iii" == 1){
+			set "ru_bbtn_fire_iii::text" "Sold";
+			set "ru_ebtn_fire_iii::visible" "1";
+			if ("gui::activated_item_rune_fire_iii" == 1){
+				set "ru_ebtn_fire_iii::text" "Unequip";
+			} else {
+				set "ru_ebtn_fire_iii::text" "Equip";
+			}
+		} else {
+			set "ru_bbtn_fire_iii::text" "Buy";
+			set "ru_ebtn_fire_iii::visible" "0";
+		}
+		
+		
+		
+		if ("gui::bought_item_rune_ice_i" == 1){
+			set "ru_bbtn_ice_i::text" "Sold";
+			set "ru_ebtn_ice_i::visible" "1";
+			if ("gui::activated_item_rune_ice_i" == 1){
+				set "ru_ebtn_ice_i::text" "Unequip";
+			} else {
+				set "ru_ebtn_ice_i::text" "Equip";
+			}
+		} else {
+			set "ru_bbtn_ice_i::text" "Buy";
+			set "ru_ebtn_ice_i::visible" "0";
+		}
+		if ("gui::bought_item_rune_ice_ii" == 1){
+			set "ru_bbtn_ice_ii::text" "Sold";
+			set "ru_ebtn_ice_ii::visible" "1";
+			if ("gui::activated_item_rune_ice_ii" == 1){
+				set "ru_ebtn_ice_ii::text" "Unequip";
+			} else {
+				set "ru_ebtn_ice_ii::text" "Equip";
+			}
+		} else {
+			set "ru_bbtn_ice_ii::text" "Buy";
+			set "ru_ebtn_ice_ii::visible" "0";
+		}
+		if ("gui::bought_item_rune_ice_iii" == 1){
+			set "ru_bbtn_ice_iii::text" "Sold";
+			set "ru_ebtn_ice_iii::visible" "1";
+			if ("gui::activated_item_rune_ice_iii" == 1){
+				set "ru_ebtn_ice_iii::text" "Unequip";
+			} else {
+				set "ru_ebtn_ice_iii::text" "Equip";
+			}
+		} else {
+			set "ru_bbtn_ice_iii::text" "Buy";
+			set "ru_ebtn_ice_iii::visible" "0";
+		}
+		
+		
+		
+		if ("gui::bought_item_rune_air_i" == 1){
+			set "ru_bbtn_air_i::text" "Sold";
+			set "ru_ebtn_air_i::visible" "1";
+			if ("gui::activated_item_rune_air_i" == 1){
+				set "ru_ebtn_air_i::text" "Unequip";
+			} else {
+				set "ru_ebtn_air_i::text" "Equip";
+			}
+		} else {
+			set "ru_bbtn_air_i::text" "Buy";
+			set "ru_ebtn_air_i::visible" "0";
+		}
+		if ("gui::bought_item_rune_air_ii" == 1){
+			set "ru_bbtn_air_ii::text" "Sold";
+			set "ru_ebtn_air_ii::visible" "1";
+			if ("gui::activated_item_rune_air_ii" == 1){
+				set "ru_ebtn_air_ii::text" "Unequip";
+			} else {
+				set "ru_ebtn_air_ii::text" "Equip";
+			}
+		} else {
+			set "ru_bbtn_air_ii::text" "Buy";
+			set "ru_ebtn_air_ii::visible" "0";
+		}
+		if ("gui::bought_item_rune_air_iii" == 1){
+			set "ru_bbtn_air_iii::text" "Sold";
+			set "ru_ebtn_air_iii::visible" "1";
+			if ("gui::activated_item_rune_air_iii" == 1){
+				set "ru_ebtn_air_iii::text" "Unequip";
+			} else {
+				set "ru_ebtn_air_iii::text" "Equip";
+			}
+		} else {
+			set "ru_bbtn_air_iii::text" "Buy";
+			set "ru_ebtn_air_iii::visible" "0";
+		}
+		
+		
+		
+		if ("gui::bought_item_rune_attack_i" == 1){
+			set "ru_bbtn_attack_i::text" "Sold";
+			set "ru_ebtn_attack_i::visible" "1";
+			if ("gui::activated_item_rune_attack_i" == 1){
+				set "ru_ebtn_attack_i::text" "Unequip";
+			} else {
+				set "ru_ebtn_attack_i::text" "Equip";
+			}
+		} else {
+			set "ru_bbtn_attack_i::text" "Buy";
+			set "ru_ebtn_attack_i::visible" "0";
+		}
+		if ("gui::bought_item_rune_attack_ii" == 1){
+			set "ru_bbtn_attack_ii::text" "Sold";
+			set "ru_ebtn_attack_ii::visible" "1";
+			if ("gui::activated_item_rune_attack_ii" == 1){
+				set "ru_ebtn_attack_ii::text" "Unequip";
+			} else {
+				set "ru_ebtn_attack_ii::text" "Equip";
+			}
+		} else {
+			set "ru_bbtn_attack_ii::text" "Buy";
+			set "ru_ebtn_attack_ii::visible" "0";
+		}
+		if ("gui::bought_item_rune_attack_iii" == 1){
+			set "ru_bbtn_attack_iii::text" "Sold";
+			set "ru_ebtn_attack_iii::visible" "1";
+			if ("gui::activated_item_rune_attack_iii" == 1){
+				set "ru_ebtn_attack_iii::text" "Unequip";
+			} else {
+				set "ru_ebtn_attack_iii::text" "Equip";
+			}
+		} else {
+			set "ru_bbtn_attack_iii::text" "Buy";
+			set "ru_ebtn_attack_iii::visible" "0";
+		}
+	}
+
+	onInit {
+		namedEvent "switchToArenaWindow";
+	}
+
+	onNamedEvent switchToArenaWindow {
+		set "ArenaWindow::visible" "1" ;
+		set "RunesWindow::visible" "0" ;
+		set "Runes2Window::visible" "0" ;
+		set "AboutWindow::visible" "0" ;
+	}
+
+	onNamedEvent switchToRunesWindow {
+		set "ArenaWindow::visible" "0" ;	
+		set "RunesWindow::visible" "1" ;
+		set "Runes2Window::visible" "0" ;
+		set "AboutWindow::visible" "0" ;
+	}
+
+	onNamedEvent switchToRunes2Window {
+		set "ArenaWindow::visible" "0" ;	
+		set "RunesWindow::visible" "0" ;
+		set "Runes2Window::visible" "1" ;
+		set "AboutWindow::visible" "0" ;
+	}
+
+	onNamedEvent switchToAboutWindow {
+		set "ArenaWindow::visible" "0" ;
+		set "RunesWindow::visible" "0" ;
+		set "Runes2Window::visible" "0" ;
+		set "AboutWindow::visible" "1" ;
+	}
+
+	windowDef Background
+	{
+		rect	130,30,495,430
+		visible	1
+		backcolor	1,1,1,0.698
+		noevents	1
+	}
+	windowDef Title
+	{
+		rect	140,50,140,30
+		visible	1
+		backcolor	1,1,1,1
+		forecolor	0,0,0,1
+		text	"PLP ARENA"
+		textscale	0.5
+		noevents	1
+	}
+	windowDef TitleMenu
+	{
+		rect	555,80,50,21
+		visible	1
+		forecolor	0,0,0,1
+		text	"MENU"
+		textscale	0.3
+		font	"fonts/lowpixel"
+		noevents	1
+	}
+	windowDef main_container
+	{
+		rect	140,90,365,360
+		visible	1
+		windowDef ArenaWindow
+		{
+			rect	5,5,355,350
+			visible	0
+			windowDef ar_status_label
+			{
+				rect	0,0,85,15
+				visible	1
+				forecolor	0,0,0,1
+				text	"STATUS"
+				textscale	0.2
+				backcolor	1,1,1,1
+				font	"fonts/marine"
+			}
+			windowDef ar_status_text
+			{
+				rect	0,15,325,30
+				visible	1
+				forecolor	0,0,0,1
+				text	"gui::InRoundText"
+				textscale	0.6
+			}
+			windowDef ar_round_label
+			{
+				rect	0,50,85,15
+				visible	1
+				forecolor	0,0,0,1
+				text	"ROUND"
+				textscale	0.2
+				backcolor	1,1,1,1
+				font	"fonts/marine"
+			}
+			windowDef ar_round_text
+			{
+				rect	0,65,325,30
+				visible	"gui::Round"
+				forecolor	0,0,0,1
+				text	"gui::Round"
+				textscale	0.6
+			}
+			windowDef ar_sp_label
+			{
+				rect	0,100,85,15
+				visible	1
+				forecolor	0,0,0,1
+				text	"Skill Points"
+				textscale	0.2
+				backcolor	1,1,1,1
+				font	"fonts/marine"
+			}
+			windowDef ar_sp_text
+			{
+				rect	0,115,325,30
+				visible	1
+				forecolor	0,0,0,1
+				text	"gui::SkillPoints"
+				textscale	0.6
+			}
+			windowDef ar_en_text
+			{
+				rect	0,170,325,30
+				visible	1
+				forecolor	0,0,0,1
+				text	"gui::EnemiesLeft"
+				textscale	0.6
+			}
+			windowDef ar_en_label
+			{
+				rect	0,155,85,15
+				visible	1
+				forecolor	0,0,0,1
+				text	"Enemies Left"
+				textscale	0.2
+				backcolor	1,1,1,1
+				font	"fonts/marine"
+			}
+			windowDef ar_start_ctn
+			{
+				rect	0,310,130,35
+				visible	1
+
+				onAction {
+					set "cmd" "plpAM start; plpAM gui;";
+				}
+
+				windowDef ar_start_btn
+				{
+					rect	0,-20,155,75
+					visible	1
+					background	"gfx/guis/mainmenu/b1_dark"
+					matcolor	1,1,1,1
+				}
+				windowDef ar_start_text
+				{
+					rect	25,0,105,30
+					visible	1
+					forecolor	1,1,1,1
+					text	"START"
+					textscale	0.5
+				}
+			}
+		}
+		windowDef RunesWindow
+		{
+			rect	5,5,355,350
+			visible	0
+			windowDef ru_header_fire
+			{
+				fire	{
+				rect	0,0,355,35
+				visible	1
+				forecolor	0,0,0,1
+				text	"FIRE RUNES"
+				textscale	0.5
+				font	"fonts/profont"
+			}
+			windowDef ru_fire_i
+			{
+				rect	0,40,110,35
+				visible	1
+				backcolor	1,1,1,1
+				forecolor	0,0,0,1
+				text	"Lvl 1"
+				textscale	0.4
+				textalign	1
+				font	"fonts/profont"
+			}
+			windowDef ru_bbtn_fire_i
+			{
+				rect	0,80,50,20
+				visible	1
+				forecolor	1,1,1,1
+				text	"Buy"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM buy item_rune_fire_i";
+				}
+
+			}
+			windowDef ru_ebtn_fire_i
+			{
+				rect	60,80,50,20
+				visible	bought_item_rune_fire_i
+				forecolor	1,1,1,1
+				text	"Equip"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM toggle item_rune_fire_i";
+				}
+
+			}
+			windowDef ru_fire_ii
+			{
+				rect	120,40,110,34
+				visible	1
+				backcolor	1,1,1,1
+				forecolor	0,0,0,1
+				text	"Lvl 2"
+				textscale	0.4
+				textalign	1
+				font	"fonts/profont"
+			}
+			windowDef ru_ebtn_fire_ii
+			{
+				rect	180,80,50,20
+				visible	bought_item_rune_fire_i
+				forecolor	1,1,1,1
+				text	"Equip"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM toggle item_rune_fire_ii";
+				}
+
+			}
+			windowDef ru_bbtn_fire_ii
+			{
+				rect	120,80,50,20
+				visible	1
+				forecolor	1,1,1,1
+				text	"Buy"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM buy item_rune_fire_ii";
+				}
+
+			}
+			windowDef ru_fire_iii
+			{
+				rect	240,40,110,34
+				visible	1
+				backcolor	1,1,1,1
+				forecolor	0,0,0,1
+				text	"Lvl 3"
+				textscale	0.4
+				textalign	1
+				font	"fonts/profont"
+			}
+			windowDef ru_bbtn_fire_iii
+			{
+				rect	240,80,50,20
+				visible	1
+				forecolor	1,1,1,1
+				text	"Buy"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM buy item_rune_fire_iii";
+				}
+
+			}
+			windowDef ru_ebtn_fire_iii
+			{
+				rect	300,80,50,20
+				visible	bought_item_rune_fire_i
+				forecolor	1,1,1,1
+				text	"Equip"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM toggle item_rune_fire_iii";
+				}
+
+			}
+			windowDef ru_header_ice
+			{
+				ice	{
+				rect	0,120,355,35
+				visible	1
+				forecolor	0,0,0,1
+				text	"ICE RUNES"
+				textscale	0.5
+				font	"fonts/profont"
+			}
+			windowDef ru_ice_i
+			{
+				rect	0,160,110,35
+				visible	1
+				backcolor	1,1,1,1
+				forecolor	0,0,0,1
+				text	"Lvl 1"
+				textscale	0.4
+				textalign	1
+				font	"fonts/profont"
+			}
+			windowDef ru_bbtn_ice_i
+			{
+				rect	0,200,50,20
+				visible	1
+				forecolor	1,1,1,1
+				text	"Buy"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM buy item_rune_ice_i";
+				}
+
+			}
+			windowDef ru_ebtn_ice_i
+			{
+				rect	60,200,50,20
+				visible	bought_item_rune_ice_i
+				forecolor	1,1,1,1
+				text	"Equip"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM toggle item_rune_ice_i";
+				}
+
+			}
+			windowDef ru_ice_ii
+			{
+				rect	120,160,110,34
+				visible	1
+				backcolor	1,1,1,1
+				forecolor	0,0,0,1
+				text	"Lvl 2"
+				textscale	0.4
+				textalign	1
+				font	"fonts/profont"
+			}
+			windowDef ru_ebtn_ice_ii
+			{
+				rect	180,200,50,20
+				visible	bought_item_rune_ice_i
+				forecolor	1,1,1,1
+				text	"Equip"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM toggle item_rune_ice_ii";
+				}
+
+			}
+			windowDef ru_bbtn_ice_ii
+			{
+				rect	120,200,50,20
+				visible	1
+				forecolor	1,1,1,1
+				text	"Buy"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM buy item_rune_ice_ii";
+				}
+
+			}
+			windowDef ru_ice_iii
+			{
+				rect	240,160,110,34
+				visible	1
+				backcolor	1,1,1,1
+				forecolor	0,0,0,1
+				text	"Lvl 3"
+				textscale	0.4
+				textalign	1
+				font	"fonts/profont"
+			}
+			windowDef ru_bbtn_ice_iii
+			{
+				rect	240,200,50,20
+				visible	1
+				forecolor	1,1,1,1
+				text	"Buy"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM buy item_rune_ice_iii";
+				}
+
+			}
+			windowDef ru_ebtn_ice_iii
+			{
+				rect	300,200,50,20
+				visible	bought_item_rune_ice_i
+				forecolor	1,1,1,1
+				text	"Equip"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM toggle item_rune_ice_iii";
+				}
+
+			}
+			windowDef ru_header_air
+			{
+				ice	{
+				rect	0,250,355,35
+				visible	1
+				forecolor	0,0,0,1
+				text	"AIR RUNES"
+				textscale	0.5
+				font	"fonts/profont"
+			}
+			windowDef ru_air_i
+			{
+				rect	0,290,110,35
+				visible	1
+				backcolor	1,1,1,1
+				forecolor	0,0,0,1
+				text	"Lvl 1"
+				textscale	0.4
+				textalign	1
+				font	"fonts/profont"
+			}
+			windowDef ru_bbtn_air_i
+			{
+				rect	0,330,50,20
+				visible	1
+				forecolor	1,1,1,1
+				text	"Buy"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM buy item_rune_air_i";
+				}
+
+			}
+			windowDef ru_ebtn_air_i
+			{
+				rect	60,330,50,20
+				visible	bought_item_rune_air_i
+				forecolor	1,1,1,1
+				text	"Equip"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM toggle item_rune_air_i";
+				}
+
+			}
+			windowDef ru_air_ii
+			{
+				rect	120,290,110,34
+				visible	1
+				backcolor	1,1,1,1
+				forecolor	0,0,0,1
+				text	"Lvl 2"
+				textscale	0.4
+				textalign	1
+				font	"fonts/profont"
+			}
+			windowDef ru_ebtn_air_ii
+			{
+				rect	180,330,50,20
+				visible	bought_item_rune_air_i
+				forecolor	1,1,1,1
+				text	"Equip"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM toggle item_rune_air_ii";
+				}
+
+			}
+			windowDef ru_bbtn_air_ii
+			{
+				rect	120,330,50,20
+				visible	1
+				forecolor	1,1,1,1
+				text	"Buy"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM buy item_rune_air_ii";
+				}
+
+			}
+			windowDef ru_air_iii
+			{
+				rect	240,290,110,34
+				visible	1
+				backcolor	1,1,1,1
+				forecolor	0,0,0,1
+				text	"Lvl 3"
+				textscale	0.4
+				textalign	1
+				font	"fonts/profont"
+			}
+			windowDef ru_bbtn_air_iii
+			{
+				rect	240,330,50,20
+				visible	1
+				forecolor	1,1,1,1
+				text	"Buy"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM buy item_rune_air_iii";
+				}
+
+			}
+			windowDef ru_ebtn_air_iii
+			{
+				rect	300,330,50,20
+				visible	bought_item_rune_air_i
+				forecolor	1,1,1,1
+				text	"Equip"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM toggle item_rune_air_iii";
+				}
+
+			}
+		}
+		windowDef Runes2Window
+		{
+			rect	5,5,355,350
+			visible	0
+			windowDef ru_header_attack
+			{
+				attack	{
+				rect	0,0,355,35
+				visible	1
+				forecolor	0,0,0,1
+				text	"ATTACK RUNES"
+				textscale	0.5
+				font	"fonts/profont"
+			}
+			windowDef ru_attack_i
+			{
+				rect	0,40,110,35
+				visible	1
+				backcolor	1,1,1,1
+				forecolor	0,0,0,1
+				text	"Lvl 1"
+				textscale	0.4
+				textalign	1
+				font	"fonts/profont"
+			}
+			windowDef ru_bbtn_attack_i
+			{
+				rect	0,80,50,20
+				visible	1
+				forecolor	1,1,1,1
+				text	"Buy"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM buy item_rune_attack_i";
+				}
+
+			}
+			windowDef ru_ebtn_attack_i
+			{
+				rect	60,80,50,20
+				visible	bought_item_rune_attack_i
+				forecolor	1,1,1,1
+				text	"Equip"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM toggle item_rune_attack_i";
+				}
+
+			}
+			windowDef ru_attack_ii
+			{
+				rect	120,40,110,34
+				visible	1
+				backcolor	1,1,1,1
+				forecolor	0,0,0,1
+				text	"Lvl 2"
+				textscale	0.4
+				textalign	1
+				font	"fonts/profont"
+			}
+			windowDef ru_ebtn_attack_ii
+			{
+				rect	180,80,50,20
+				visible	bought_item_rune_attack_i
+				forecolor	1,1,1,1
+				text	"Equip"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM toggle item_rune_attack_ii";
+				}
+
+			}
+			windowDef ru_bbtn_attack_ii
+			{
+				rect	120,80,50,20
+				visible	1
+				forecolor	1,1,1,1
+				text	"Buy"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM buy item_rune_attack_ii";
+				}
+
+			}
+			windowDef ru_attack_iii
+			{
+				rect	240,40,110,34
+				visible	1
+				backcolor	1,1,1,1
+				forecolor	0,0,0,1
+				text	"Lvl 3"
+				textscale	0.4
+				textalign	1
+				font	"fonts/profont"
+			}
+			windowDef ru_bbtn_attack_iii
+			{
+				rect	240,80,50,20
+				visible	1
+				forecolor	1,1,1,1
+				text	"Buy"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM buy item_rune_attack_iii";
+				}
+
+			}
+			windowDef ru_ebtn_attack_iii
+			{
+				rect	300,80,50,20
+				visible	bought_item_rune_attack_i
+				forecolor	1,1,1,1
+				text	"Equip"
+				textscale	0.3
+				backcolor	0,0,0,1
+
+				onAction {
+					set "cmd" "plpRM toggle item_rune_attack_iii";
+				}
+
+			}
+		}
+		windowDef AboutWindow
+		{
+			rect	5,5,355,350
+			visible	0
+			windowDef unnamed
+			{
+				rect	0,-5,355,30
+				visible	1
+				forecolor	0,0,0,1
+				text	"ABOUT"
+				textscale	0.5
+				font	"fonts/lowpixel"
+			}
+			windowDef unnamed1
+			{
+				rect	0,24,355,75
+				visible	1
+				forecolor	0,0,0,1
+				text	"A PvE arena game with endless rounds and allows the blaster to have custom runes to add unique effects to attacks."
+				textscale	0.3
+				font	"fonts/lowpixel"
+			}
+			windowDef unnamed2
+			{
+				rect	0,130,355,75
+				visible	1
+				forecolor	0,0,0,1
+				text	"> Fire :: Chance to burn HP\n> Ice :: Chance to freeze movement\n> Air :: Chance to propel upward\n> Attack :: Increase damage output"
+				textscale	0.3
+				font	"fonts/lowpixel"
+			}
+			windowDef unnamed3
+			{
+				rect	0,99,355,29
+				visible	1
+				forecolor	0,0,0,1
+				text	"RUNES"
+				textscale	0.5
+				font	"fonts/lowpixel"
+			}
+			windowDef unnamed4
+			{
+				rect	0,209,355,29
+				visible	1
+				forecolor	0,0,0,1
+				text	"ARENA"
+				textscale	0.5
+				font	"fonts/lowpixel"
+			}
+			windowDef unnamed5
+			{
+				rect	0,240,355,75
+				visible	1
+				forecolor	0,0,0,1
+				text	"Start a round in Arena, defeat all enemies to end the round and gain a skill point that can be used to buy a rune."
+				textscale	0.3
+				font	"fonts/lowpixel"
+			}
+		}
+	}
+	windowDef ctn_btn_arena
+	{
+		rect	510,110,105,25
+		visible	1
+		windowDef bg_btn_arena
+		{
+			rect	0,-10,135,50
+			visible	1
+			background	"gfx/guis/mainmenu/b1_dark"
+			matcolor	1,1,1,1
+		}
+		windowDef text_btn_arena
+		{
+			rect	15,0,155,25
+			visible	1
+			forecolor	1,1,1,1
+			text	"ARENA"
+			textscale	0.3
+			font	"fonts/profont"
+
+			onAction {
+				namedEvent	"switchToArenaWindow";
+			}
+
+		}
+	}
+	windowDef ctn_btn_runes
+	{
+		rect	510,160,105,25
+		visible	1
+		windowDef bg_btn_runes
+		{
+			rect	0,-10,135,50
+			visible	1
+			background	"gfx/guis/mainmenu/b1_dark"
+			matcolor	1,1,1,1
+		}
+		windowDef text_btn_runes
+		{
+			rect	15,0,155,25
+			visible	1
+			forecolor	1,1,1,1
+			text	"RUNES"
+			textscale	0.3
+			font	"fonts/profont"
+
+			onAction {
+				namedEvent	"switchToRunesWindow";
+			}
+
+		}
+	}
+	windowDef ctn_btn_runes2
+	{
+		rect	510,210,105,25
+		visible	1
+		windowDef bg_btn_runes2
+		{
+			rect	0,-9,135,50
+			visible	1
+			background	"gfx/guis/mainmenu/b1_dark"
+			matcolor	1,1,1,1
+		}
+		windowDef text_btn_runes2
+		{
+			rect	15,0,155,25
+			visible	1
+			forecolor	1,1,1,1
+			text	"RUNES II"
+			textscale	0.3
+			font	"fonts/profont"
+
+			onAction {
+				namedEvent	"switchToRunes2Window";
+			}
+
+		}
+	}
+	windowDef ctn_btn_about
+	{
+		rect	510,255,105,25
+		visible	1
+		windowDef bg_btn_about
+		{
+			rect	0,-9,135,50
+			visible	1
+			background	"gfx/guis/mainmenu/b1_dark"
+			matcolor	1,1,1,1
+		}
+		windowDef text_btn_about
+		{
+			rect	15,0,155,25
+			visible	1
+			forecolor	1,1,1,1
+			text	"ABOUT"
+			textscale	0.3
+			font	"fonts/profont"
+
+			onAction {
+				namedEvent	"switchToAboutWindow";
+			}
+
+		}
+	}
+	windowDef ctn_btn_close
+	{
+		rect	510,305,105,25
+		visible	1
+		windowDef bg_btn_close
+		{
+			rect	0,-9,135,50
+			visible	1
+			background	"gfx/guis/mainmenu/b1_dark"
+			matcolor	1,1,1,1
+		}
+		windowDef text_btn_close
+		{
+			rect	15,0,155,25
+			visible	1
+			forecolor	1,1,1,1
+			text	"CLOSE"
+			textscale	0.3
+			font	"fonts/profont"
+
+			onAction {
+				set "cmd" "plpAM gui";
+			}
+
+		}
+	}
+}

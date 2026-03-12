@@ -7,7 +7,7 @@
 A PvE open arena game mode with a twist. The blaster can be modded to use special runes to change the way how a blaster interacts with enemies. Cause burns and damage over time, freeze enemies in place, have enemies fly into the air, or affect the damage the blaster can deal.
 
 ## How to Play
-After launching Quake 4 with this mod loaded, in any location when spawn, open up the in-game command terminal and type in the command: `plpAM start`
+After launching Quake 4 with this mod loaded, in any location when spawn, open up the in-game command terminal and type in the command: `plpAM start` OR the shortcut `p`
 
 ## Command Line Notes
 
